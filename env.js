@@ -1,0 +1,20 @@
+module.exports = {
+  MONGODB: {
+    URL: process.env.MONGODB_URL,
+    DBNAME: process.env.MONGODB_DBNAME,
+  },
+  PORT: process.env.PORT,
+  WEB_APP_BASE_URL: process.env.WEB_APP_BASE_URL,
+  NOTIFICATIONS_PAGE_URL: process.env.NOTIFICATIONS_PAGE_URL,
+  SMTP_FROM: process.env.SMTP_FROM,
+  STARTUP_APP_SMTP_FROM: process.env.STARTUP_APP_SMTP_FROM,
+  NODE_BRAVE_API_KEY: process.env.NODE_BRAVE_API_KEY,
+  APPOINTMENTS_GOOGLE_CALENDAR_ID: process.env.APPOINTMENTS_GOOGLE_CALENDAR_ID,
+  JWT: {
+    SECRET_KEY: process.env.JWT_SECRET_KEY,
+  },
+  FILES: {
+    MAX_FILE_SIZE: process.env.MAX_FILE_SIZE || 100000000,
+    MAX_FILE_COUNT: process.env.MAX_FILE_COUNT || 10,
+  },
+};

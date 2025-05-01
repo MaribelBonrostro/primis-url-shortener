@@ -1,0 +1,51 @@
+version: '3.9'
+services:
+  mongo:
+    image: mongo
+    restart: on-failure
+    command: mongod --port 27020
+    ports:
+      - 27020:27020
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+
+  mongo-express:
+    image: mongo-express
+    restart: on-failure
+    depends_on:
+      - mongo
+    ports:
+      - 6010:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=example
+      - ME_CONFIG_MONGODB_URL=mongodb://root:example@mongo:27020
+  redis:
+    image: redis:latest
+    ports:
+      - ${REDIS_LOCAL_PORT}:${REDIS_DOCKER_PORT}
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - mongo-express
+    ports:
+      - 6040:6040
+    env_file:
+      - ./.env
+    environment:
+      - PORT=6040
+      - MONGODB_URL=mongodb://root:example@mongo:27020/
+      - MONGODB_DBNAME=primis-analytics
+      - MONGODB_USE_SSL=false
+      - REDIS_DOCKER_PORT=6379
+      - REDIS_LOCAL_PORT=6379
+      - REDIS_HOST=redis
+    volumes:
+      - .:/api
+volumes:
+  db:
+    driver: local
